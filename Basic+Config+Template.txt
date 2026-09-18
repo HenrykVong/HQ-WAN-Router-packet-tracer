@@ -1,0 +1,34 @@
+
+enable
+config t
+no ip domain-lookup
+hostname <name>
+ip domain-name company.local
+clock timezone <zone-name> <UTC-offset>
+banner motd ^C
+##########################################
+#       This is a private network!       #
+#  System use is subject to monitoring.  #
+#   Unauthorized users are prohibited    #
+#    and violators may be prosecuted.    #
+##########################################^C
+username tcadmin password P@$$word
+enable secret P@$$word2
+service password-encryption
+ip access-list standard VTY
+permit 192.168.110.0 0.0.0.255
+permit 192.168.120.0 0.0.0.255
+permit 192.168.130.0 0.0.0.255
+line con 0 
+login local
+line vty 0 4
+access-class VTY in
+login local
+transport input ssh
+transport output ssh
+ip ssh version 2
+crypto key generate rsa
+1024
+ntp server 192.168.10.50
+do wr
+
